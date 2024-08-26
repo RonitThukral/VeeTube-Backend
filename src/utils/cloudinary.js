@@ -22,7 +22,10 @@ import fs from "fs";
             })
 
             //file has been uplaoded on cloudinary
-            console.log("file is uplaoded on cloudinary successfully: ", response.url)
+            
+                fs.unlinkSync(localFilePath)
+                console.log("file is uplaoded on cloudinary successfully: ", response.url)
+            
 
             return response;
 
@@ -34,4 +37,4 @@ import fs from "fs";
         }
     }
 
-    
+    export default uploadOnCloudinary
