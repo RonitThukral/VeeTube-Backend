@@ -118,27 +118,28 @@ const loginUser = asyncHandler(async (req, res) => {
 
     // Generate access and refresh tokens
     const {accessToken, refreshToken} = await generateAccessAndRefreshTokens(user._id)
-console.log("Access Token : ", accessToken)
-console.log("Refresh Token : ", refreshToken)
+// console.log("Access Token : ", accessToken)
+// console.log("Refresh Token : ", refreshToken)
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
     // setting cookie options
-    const options = {
+    const cookieOptions = {
         httpOnly: true,
-        secure: true
+        secure: false,
+        sameSite: "lax"
     }
     // send cookie
     return res
     .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken, cookieOptions)
+    .cookie("refreshToken", refreshToken, cookieOptions)
     .json(
         new ApiResponse(
             200, 
             {
                 user: loggedInUser,
                  accessToken, 
-                 refreshToken
+                 refreshToken,
             },
             "User Logged In Succcessfully"
         )
@@ -163,20 +164,24 @@ const logOutUser = asyncHandler (async (req, res) => {
         }
     )
     
-    console.log(req.user)
+    // console.log(req.user)
 
-    const options = {
+    const cookieOptions = {
         httpOnly: true,
-        secure: true
+        secure: false,
+        sameSite: "lax"
+
     }
 
     return res
     .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
+    .clearCookie("accessToken", cookieOptions)
+    .clearCookie("refreshToken", cookieOptions)
     .json(new ApiResponse(200, {}, "User Logged Out Successfully"))
 
 })
+
+ 
 
 export {
     registerUser,

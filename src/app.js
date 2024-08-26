@@ -1,5 +1,5 @@
-import express, { urlencoded } from "express";
 import cookieParser from "cookie-parser";
+import express, { urlencoded } from "express";
 import cors from "cors"
 
 const app = express();
